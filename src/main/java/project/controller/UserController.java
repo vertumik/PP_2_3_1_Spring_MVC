@@ -38,17 +38,18 @@ public class UserController {
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(Model model, @PathVariable("id") int id) {
+    public String updateUserForm(@PathVariable("id") int id, Model model){
         User user = userService.getUserById(id);
         model.addAttribute("user", user);
         return "edit";
     }
 
     @PostMapping("/edit")
-    public String update(User user) {
-        userService.updateUser(user);
+    public String updateUser(User user){
+        userService.addUser(user);
         return "redirect:/users";
     }
+
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) {
         userService.removeUser(userService.getUserById(id));
