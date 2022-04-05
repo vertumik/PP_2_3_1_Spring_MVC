@@ -1,6 +1,5 @@
 package project.config;
 
-import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,7 +11,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.TransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Properties;
@@ -43,17 +42,13 @@ public class RootConfig {
     LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean emFactory = new LocalContainerEntityManagerFactoryBean();
         emFactory.setDataSource(dataSource());
-        emFactory.setPersistenceProviderClass(HibernatePersistenceProvider.class);
         emFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-        Properties properties = new Properties();
-        properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
-        properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
-        emFactory.setJpaProperties(properties);
-        emFactory.setPackagesToScan("model");
+        emFactory.setJpaProperties(properties());
+        emFactory.setPackagesToScan("project.model");
         return emFactory;
     }
     @Bean
-    TransactionManager transactionManager() {
+    PlatformTransactionManager transactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
         return transactionManager;
@@ -62,5 +57,13 @@ public class RootConfig {
     @Bean
     PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
+    }
+
+    private Properties properties() {
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.dialect", environment.getProperty("hibernate.dialect"));
+        properties.setProperty("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
+        properties.setProperty("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"));
+        return properties;
     }
 }
