@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Users</title>
@@ -11,18 +11,23 @@
     <div th:case="*">
         <h2>Users</h2>
         <table>
+            <head>
                 <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Email</th>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>lastName</th>
+                    <th>numberTelephone</th>
                 </tr>
+                <title>use</title>
+            </head>
             <tbody>
             <tr th:each="user : ${users}">
                 <td th:text="${user.id}"></td>
                 <td th:text="${user.name}"></td>
-                <td th:text="${user.email}"></td>
-                <td><a th:href="@{edit/{id}(id=${user.id})}">Edit</a></td>
-                <td><a th:href="@{delete/{id}(id=${user.id})}">Delete</a></td>
+                <td th:text="${user.lastname}"></td>
+                <td th:text="${user.numberTelephone}"></td>
+                <td><a th:href="@{user-update/{id}(id=${user.id})}">Edit</a></td>
+                <td><a th:href="@{user-delete/{id}(id=${user.id})}">Delete</a></td>
             </tr>
             </tbody>
         </table>

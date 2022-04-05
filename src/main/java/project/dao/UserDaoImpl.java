@@ -25,18 +25,21 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    public void removeUser(User user) {
-        em.remove(user);
+    public void removeUser(Long id) {
+        User user = em.find(User.class, id);
+        if (user != null) {
+            em.remove(user);
+        }
     }
 
     @Override
-    public User getUserById(int id) {
+    public User getUserById(Long id) {
         return em.find(User.class, id);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<User> listUser() {
+    public List<User> listUsers() {
         TypedQuery<User> query = em.createQuery("from User", User.class);
         return query.getResultList();
     }

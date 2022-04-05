@@ -20,39 +20,39 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String findAll(Model model) {
-        List<User> users = userService.listUser();
+    public String printUsers(Model model) {
+        List<User> users = userService.printUsers();
         model.addAttribute("users", users);
-        return "users";
+        return "users-list";
     }
 
-    @GetMapping("/new")
-    public String newUser(User user) {
-        return "new";
+    @GetMapping("/user-create")
+    public String createUserForm(User user) {
+        return "user-create";
     }
 
-    @PostMapping("/new")
-    public String create(User user) {
+    @PostMapping("/user-create")
+    public String createUser(User user) {
         userService.addUser(user);
-        return "redirect:/users";
+        return "users-list";
     }
 
-    @GetMapping("/edit/{id}")
-    public String updateUserForm(@PathVariable("id") int id, Model model){
-        User user = userService.getUserById(id);
+    @GetMapping("/user-delete/{id}")
+    public String deleteUser(@PathVariable("id") Long id) {
+        userService.deleteById(id);
+        return "users-list";
+    }
+
+    @GetMapping("/user-update/{id}")
+    public String updateUserForm(@PathVariable("id") Long id, Model model) {
+        User user = userService.findById(id);
         model.addAttribute("user", user);
-        return "edit";
+        return "/user-update";
     }
 
-    @PostMapping("/edit")
-    public String updateUser(User user){
-        userService.addUser(user);
-        return "redirect:/users";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") int id) {
-        userService.removeUser(userService.getUserById(id));
-        return "redirect:/users";
+    @PostMapping("/user-update")
+    public String updateUser(User user) {
+        userService.updateUser(user);
+        return "users-list";
     }
 }

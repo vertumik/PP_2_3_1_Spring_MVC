@@ -1,6 +1,6 @@
 <html>
 <body>
 <h2>Hello World!</h2>
-<a href="/views/new">to index</a>
+<a href="users">to index</a>
 </body>
 </html>
