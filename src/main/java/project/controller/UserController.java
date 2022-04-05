@@ -19,45 +19,39 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("users")
-    public String index(Model model) {
+    @GetMapping("/users")
+    public String findAll(Model model) {
         List<User> users = userService.listUser();
         model.addAttribute("users", users);
         return "users";
     }
 
-    @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "show";
-    }
-
-    @GetMapping("new")
-    public String newUser(Model model) {
-        model.addAttribute("user", new User());
+    @GetMapping("/new")
+    public String newUser(User user) {
         return "new";
     }
 
-    @PostMapping
-    public String create(@ModelAttribute("user") User user) {
+    @PostMapping("/new")
+    public String create(User user) {
         userService.addUser(user);
-        return "users";
+        return "redirect:/users";
     }
 
-    @GetMapping("/{id}/edit")
+    @GetMapping("/edit/{id}")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("user", userService.getUserById(id));
+        User user = userService.getUserById(id);
+        model.addAttribute("user", user);
         return "edit";
     }
 
-    @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") User user) {
+    @PostMapping("/edit")
+    public String update(User user) {
         userService.updateUser(user);
-        return "users";
+        return "redirect:/users";
     }
-    @DeleteMapping("/{id}")
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) {
         userService.removeUser(userService.getUserById(id));
-        return "users";
+        return "redirect:/users";
     }
 }
