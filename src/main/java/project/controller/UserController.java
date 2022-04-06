@@ -19,7 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/users-list")
     public String printUsers(Model model) {
         List<User> users = userService.printUsers();
         model.addAttribute("users", users);
