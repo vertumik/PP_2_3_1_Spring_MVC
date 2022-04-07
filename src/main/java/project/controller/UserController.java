@@ -43,8 +43,8 @@ public class UserController {
         return "redirect:/users-list";
     }
 
-    @GetMapping("/user-update/{id}")
-    public String updateUserForm(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/user-update")
+    public String updateUserForm(@RequestParam("id") Long id, Model model) {
         User user = userService.findById(id);
         model.addAttribute("user", user);
         return "user-update";
