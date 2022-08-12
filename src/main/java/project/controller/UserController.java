@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @GetMapping("/users-list")
-    public String printUsers(Model model) {
+    public String findAll(Model model) {
         List<User> users = userService.printUsers();
         model.addAttribute("users", users);
         return "users-list";
